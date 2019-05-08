@@ -6,7 +6,7 @@
 
 
 template< std::size_t... Indices, typename FuncType,  typename...VarTypes, typename...ParamTypes>
-auto ApplyTupleToFuncImpl(std::tuple<VarTypes...>& InTuple, FuncType&& InFunc, ParamTypes&&... InParam)
+auto ApplyTupleToFuncImpl(std::tuple<VarTypes...>& InTuple, FuncType&& InFunc, std::index_sequence<Indices...>, ParamTypes&&... InParam)
 -> decltype(InFunc(std::forward<ParamTypes>(InParam)..., std::get<Indices>(InTuple)...))
 {
 	 return  InFunc(std::forward<ParamTypes>(InParam)..., std::get<Indices>(InTuple)...);
@@ -14,9 +14,9 @@ auto ApplyTupleToFuncImpl(std::tuple<VarTypes...>& InTuple, FuncType&& InFunc, P
 
 template<typename FuncType, typename... VarTypes, typename... ParamTypes>
 auto  ApplyTupleToFunc(std::tuple<VarTypes...>& InTuple, FuncType InFunc, ParamTypes... InParam)
--> decltype(ApplyTupleToFuncImpl<std::index_sequence_for<VarTypes...>()>(InTuple, InFunc, InParam))
+-> decltype(ApplyTupleToFuncImpl  (InTuple, InFunc,std::index_sequence_for<VarTypes...>(), InParam ...))
 {
-	return ApplyTupleToFuncImpl < std::index_sequence_for<VarTypes...>{} > (InTuple, InFunc, InParam ...);
+	return ApplyTupleToFuncImpl (InTuple, InFunc, std::index_sequence_for<VarTypes...>(), InParam ...);
 }
 
 //Transform tuple with recursion.

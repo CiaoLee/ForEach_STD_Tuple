@@ -26,7 +26,7 @@ int main()
 	std::cout << std::endl;
 
 	std::function<int(int, int, int, int)> CallFunc2 = TuplePrintInt4;
-	std::cout<<ApplyTupleToFuncImpl<0,1,2>(IntsTuple, CallFunc2, 1)<<" ";
+	std::cout<<ApplyTupleToFunc(IntsTuple, CallFunc2, 1)<<" ";
 
 	int Temp;
 	std::cin >> Temp;
